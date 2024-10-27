@@ -18,16 +18,46 @@ const app = new Hono<{
 app.use('/api/v1/blog/*', async (c, next) => {
   //Bearer token is the format for authorization token
   const header = c.req.header("authorization") || "";
+  console.log(header);
   const token = header.split(" ")[1];
-  const response = verify(header,c.env.JWT_SECRET);
+  console.log(token);
+  const response = await verify(token,c.env.JWT_SECRET);
+  console.log(response);
   // @ts-ignore
   if(response.id){
-    next();
+    await next();
   }else{
     c.status(403);
     return c.json({error : "unauthorised"})
   }
 })
+
+// app.use('/api/v1/blog/*', async (c, next) => {
+//   const header = c.req.header("authorization") || "";
+//   console.log(header);
+  
+//   const token = header.split(" ")[1]; // Bearer token extraction
+//   if (!token) {
+//     c.status(403);
+//     return c.json({ error: "unauthorized, no token provided" });
+//   }
+
+//   try {
+//     const response = verify(token, c.env.JWT_SECRET); // Use `await` if `verify` is async
+//     // Check if the response contains a valid `id`
+//     if (response && response.id) {
+//       await next();
+//     } else {
+//       c.status(403);
+//       return c.json({ error: "unauthorized" });
+//     }
+//   } catch (e) {
+//     console.error("Token verification failed:", e);
+//     c.status(403);
+//     return c.json({ error: "unauthorized, token verification failed" });
+//   }
+// });
+
 
 app.get("/",(c)=>{ //c stands for context it consists of all the req,res,next params
   return c.text("hono");
@@ -36,20 +66,20 @@ app.get("/",(c)=>{ //c stands for context it consists of all the req,res,next pa
 app.route("/api/v1/user", userRouter);
 app.route("/api/v1/blog", bookRouter);
 
-app.get('/api/v1/blog/:id', (c) => {
-	const id = c.req.param('id')
-	console.log(id);
-	return c.text('get blog route')
-})
+// app.get('/api/v1/blog/:id', (c) => {
+// 	const id = c.req.param('id')
+// 	console.log(id);
+// 	return c.text('get blog route')
+// })
 
-app.post('/api/v1/blog', (c) => {
+// app.post('/api/v1/blog', (c) => {
 
-	return c.text('signin route')
-})
+// 	return c.text('signin route')
+// })
 
-app.put('/api/v1/blog', (c) => {
-	return c.text('signin route')
-})
+// app.put('/api/v1/blog', (c) => {
+// 	return c.text('signin route')
+// })
 
 export default app
 
