@@ -3,6 +3,7 @@ import { PrismaClient } from '@prisma/client/edge'
 import { withAccelerate } from '@prisma/extension-accelerate'
 import { decode, sign, verify } from 'hono/jwt'
 import { use } from 'hono/jsx'
+import { signupInput, signinInput } from "@nikhil-duduka/commonzod";
 export const userRouter = new Hono<{
     Bindings : {
       DATABASE_URL : string , 
@@ -11,11 +12,18 @@ export const userRouter = new Hono<{
   }>()
 
 userRouter.post('signup', async (c) => {
+  const body = await c.req.json();
+  const {success} = signupInput.safeParse(body);
+  if(!success){
+    c.status(411);
+    return c.json({
+      msg : "invalid signup inputs pw should be more than 6 digits"
+    })
+  }
 	const prisma = new PrismaClient({
 		datasourceUrl: c.env?.DATABASE_URL	,
 	}).$extends(withAccelerate());
 
-	const body = await c.req.json();
 	try {
 		const user = await prisma.user.create({
 			data: {
@@ -32,11 +40,18 @@ userRouter.post('signup', async (c) => {
 })
 
 userRouter.post('/signin', async (c) => {
+  const body = await c.req.json();
+  const {success} = signinInput.safeParse(body);
+  if(!success){
+    c.status(411);
+    c.json({
+      msg : "check sign in user.ts"
+    })
+  }
 	const prisma = new PrismaClient({
 		datasourceUrl: c.env?.DATABASE_URL	,
 	}).$extends(withAccelerate());
 
-  const body = await c.req.json();
 	try{
     const user = await prisma.user.findUnique({
       where: {

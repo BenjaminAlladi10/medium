@@ -151,32 +151,6 @@
 //     }
 // })
 
-// //should be adding pagination here 
-// blogRouter.get('/bulk', async(c) => {
-// 	const prisma = new PrismaClient({
-// 		datasourceUrl: c.env?.DATABASE_URL,
-// 	}).$extends(withAccelerate());
-//     const blogs = prisma.post.findMany();
-//     return c.json({blogs})
-// });
-
-// blogRouter.get('/nik', async(c) => {
-// 	const prisma = new PrismaClient({
-// 		datasourceUrl: c.env?.DATABASE_URL,
-// 	}).$extends(withAccelerate());
-//     // const authorId = c.get('userId');
-//     // console.log(authorId);
-//     return c.json({data : "hii"})
-// });
-
-
-// blogRouter.get('/test-token', async (c) => {
-//     const testToken = await sign({ id: "15daedbd-db02-4608-a9d1-f18bc3905199-id" }, c.env.JWT_SECRET);
-//     return c.json({
-//         token: testToken
-//     });
-// });
-
 import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
@@ -228,38 +202,63 @@ bookRouter.post('/', async (c) => {
 	});
 })
 
-bookRouter.put('/', async (c) => {
-	const userId = c.get('userId');
+bookRouter.put('/', async(c) => {
+        const prisma = new PrismaClient({
+    		datasourceUrl: c.env?.DATABASE_URL,
+    	}).$extends(withAccelerate());
+    
+    	const body = await c.req.json();
+    
+        try{
+            const updt = await prisma.post.update({
+                where : {
+                    id : body.id
+                },
+                data :{
+                    title : body.title , 
+                    content : body.content
+                }
+            })
+            return c.json({
+                id : body.id
+            })
+        }
+        catch(e){
+            console.log(e);
+            return c.text("error updating");
+        }
+    })
+
+    //should be adding pagination here 
+bookRouter.get('/bulk', async(c) => {
 	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL	,
+		datasourceUrl: c.env?.DATABASE_URL,
 	}).$extends(withAccelerate());
 
-	const body = await c.req.json();
-	prisma.post.update({
-		where: {
-			id: body.id,
-			authorId: userId
-		},
-		data: {
-			title: body.title,
-			content: body.content
-		}
-	});
-
-	return c.text('updated post');
+    const blogs = await prisma.post.findMany();
+    return c.json(blogs)
 });
 
-bookRouter.get('/:id', async (c) => {
-	const id = c.req.param('id');
-	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL	,
-	}).$extends(withAccelerate());
-	
-	const post = await prisma.post.findUnique({
-		where: {
-			id
-		}
-	});
+    bookRouter.get("/:id" , async(c)=>{
+        const prisma = new PrismaClient({
+    		datasourceUrl: c.env?.DATABASE_URL,
+    	}).$extends(withAccelerate());
+    
+    	const id = c.req.param("id");
+        try{
+            const blog  = await prisma.post.findFirst({
+                where : {
+                    id : id
+                } ,
+            })
+            return c.json({
+                blog
+            })
+        }catch(e){
+            console.log(e);
+            return c.status(422);
+            c.text("unable to fetch")
+        }
+    })
 
-	return c.json(post);
-})
+
