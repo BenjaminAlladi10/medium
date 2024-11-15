@@ -17,7 +17,7 @@ userRouter.post('signup', async (c) => {
   if(!success){
     c.status(411);
     return c.json({
-      msg : "invalid signup inputs pw should be more than 6 digits"
+      msg : "invalid signup inputs pw should be more than 6 digits , email shud have @gmail.com"
     })
   }
 	const prisma = new PrismaClient({

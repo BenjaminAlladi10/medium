@@ -6,6 +6,7 @@ import { use } from 'hono/jsx'
 import { userRouter } from './routes/user'
 // import { blogRouter } from './routes/blog'
 import { bookRouter } from './routes/blog'
+import { cors } from 'hono/cors'
 
 
 const app = new Hono<{
@@ -15,6 +16,7 @@ const app = new Hono<{
   }
 }>()
 
+app.use('/api/*', cors())
 app.use('/api/v1/blog/*', async (c, next) => {
   //Bearer token is the format for authorization token
   const header = c.req.header("authorization") || "";
