@@ -155,6 +155,7 @@ import { PrismaClient } from "@prisma/client/edge";
 import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
+import { createPostInput ,updatePostInput } from "@nikhil-duduka/commonzod";
 
 export const bookRouter = new Hono<{
     Bindings: {
@@ -190,24 +191,40 @@ bookRouter.post('/', async (c) => {
 	}).$extends(withAccelerate());
 
 	const body = await c.req.json();
-	const post = await prisma.post.create({
-		data: {
-			title: body.title,
-			content: body.content,
-			authorId: userId
-		}
-	});
-	return c.json({
-		id: post.id
-	});
+    const {success} = createPostInput.safeParse(body);
+    if(!success){
+        c.status(413);
+        return c.json({ error: "error in blog.ts post route" });
+
+    }
+	try{
+        const post = await prisma.post.create({
+            data: {
+                title: body.title,
+                content: body.content,
+                authorId: userId 
+            }
+        });
+        return c.json({
+            id: post.id
+        });
+    }catch(error){
+        c.status(413);
+        return c.json({ error: "could not post check blog.ts backend dir" });
+    }
 })
 
 bookRouter.put('/', async(c) => {
+        const body = await c.req.json();
+        const {success} = createPostInput.safeParse(body);
+        if(!success){
+            c.status(413);
+            return c.json({ error: "error in blog.ts post route" });
+
+        }
         const prisma = new PrismaClient({
     		datasourceUrl: c.env?.DATABASE_URL,
     	}).$extends(withAccelerate());
-    
-    	const body = await c.req.json();
     
         try{
             const updt = await prisma.post.update({
@@ -235,8 +252,19 @@ bookRouter.get('/bulk', async(c) => {
 		datasourceUrl: c.env?.DATABASE_URL,
 	}).$extends(withAccelerate());
 
-    const blogs = await prisma.post.findMany();
-    return c.json(blogs)
+    const blogs = await prisma.post.findMany({
+        select : {
+            content : true ,
+            title : true ,
+            id : true ,
+            author : {
+                select : {
+                    name : true
+                }
+            }
+        }
+    });
+    return c.json({"blogs" : blogs})
 });
 
     bookRouter.get("/:id" , async(c)=>{
@@ -249,7 +277,16 @@ bookRouter.get('/bulk', async(c) => {
             const blog  = await prisma.post.findFirst({
                 where : {
                     id : id
-                } ,
+                },select : {
+                    content : true ,
+                    title : true ,
+                    id : true ,
+                    author : {
+                        select : {
+                            name : true
+                        }
+                    }
+                }
             })
             return c.json({
                 blog
