@@ -12,15 +12,15 @@ export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
                     <div className="text-5xl font-extrabold">
                         {blog.title}
                     </div>
-                    <div className="text-slate-500 pt-3">
+                    <div className="text-slate-500 py-3">
                         posted on 2nd Dec 2024
                     </div>
-                    <div>
+                    <div className="pt-2 text-pretty font-serif">
                         {blog.content}
                     </div>
 
                 </div>
-                <div className="col-span-4">
+                <div className="col-span-4 pl-8">
                     <div className="font-extrabold text-blue-600/100 dark:text-blue-500/100">
                         Author
                     </div>

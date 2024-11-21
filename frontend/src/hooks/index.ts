@@ -52,7 +52,7 @@ export interface Blogtype{
 
 export const useBlog = ({id} : {id :string}) =>{
     const [loading,setLoading] = useState(true);
-    const [blog,setBlog] = useState<Blogtype[]>([]);
+    const [blog,setBlog] = useState<Blogtype>();
 
     useEffect(()=>{
         const fetchBlog = async () =>{
