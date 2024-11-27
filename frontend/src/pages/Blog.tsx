@@ -10,6 +10,7 @@ export const Blog = ()=>{
     });
     if(loading || !blog){
         return(<div>
+            <Appbar/>
             <div className="flex justify-center">
                 <div>
                     <BlogSkeleton/>

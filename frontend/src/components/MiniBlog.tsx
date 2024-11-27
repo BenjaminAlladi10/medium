@@ -1,10 +1,11 @@
-import { formatDistanceToNow } from "date-fns"
 import { Blogtype } from "../hooks"
+import { Appbar } from "./Appbar"
 import { Avatar } from "./BlogCard"
 
 export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
     return (
         <div>
+        <Appbar></Appbar>
         <div className="flex justify-center">
             <div className="grid grid-cols-12 px-10 w-full pt-200 max-w-screen-xl pt-12">
                 <div className="col-span-8">
@@ -12,13 +13,10 @@ export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
                         {blog.title}
                     </div>
                     <div className="text-slate-500 py-3">
-                        {blog.createdAt.slice(0,10)}
+                        posted on 2nd Dec 2024
                     </div>
                     <div className="pt-2 text-pretty font-serif">
                         {blog.content}
-                    </div>
-                    <div className="text-black font-semibold py-3">
-                        Posted {formatDistanceToNow(new Date(blog.createdAt), { addSuffix: true })}
                     </div>
 
                 </div>

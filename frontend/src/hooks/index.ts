@@ -8,8 +8,7 @@ interface Blogstype{
     "id": string,
     "author": {
         "name": string
-    },
-    "createdAt" : string
+    }
 
 }
 
@@ -47,8 +46,7 @@ export interface Blogtype{
     "id": string,
     "author": {
         "name": string
-    },
-    "createdAt" : string
+    }
 
 }
 
