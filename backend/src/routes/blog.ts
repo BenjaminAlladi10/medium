@@ -202,7 +202,8 @@ bookRouter.post('/', async (c) => {
             data: {
                 title: body.title,
                 content: body.content,
-                authorId: userId 
+                authorId: userId, 
+                createdAt : body.createdAt
             }
         });
         return c.json({
@@ -261,7 +262,8 @@ bookRouter.get('/bulk', async(c) => {
                 select : {
                     name : true
                 }
-            }
+            } , 
+            createdAt : true
         }
     });
     return c.json({"blogs" : blogs})
@@ -285,7 +287,8 @@ bookRouter.get('/bulk', async(c) => {
                         select : {
                             name : true
                         }
-                    }
+                    },
+                    createdAt:true
                 }
             })
             return c.json({

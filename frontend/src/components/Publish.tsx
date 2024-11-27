@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 export const Publish = () => {
     const [title, setTitle] = useState("");
     const [description, setDescription] = useState("");
+    // const [url, setUrl] = useState("");
     const navigate = useNavigate();
   
     const handlePublish = async () => {

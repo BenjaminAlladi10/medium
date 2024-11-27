@@ -5,12 +5,14 @@ import { Signin } from './pages/Signin'
 import { Blog } from './pages/Blog'
 import {Blogs} from './pages/Blogs'
 import { Publish } from './components/Publish'
+import { Appbar } from './components/Appbar'
 
 function App() {
   
   return (
       <>
       <BrowserRouter>
+        <Appbar></Appbar>
         <Routes>
           <Route path="/signup" element= {<Signup/>}></Route>
           <Route path="/signin" element= {<Signin/>}></Route>

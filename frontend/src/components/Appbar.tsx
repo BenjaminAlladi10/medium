@@ -1,6 +1,8 @@
 import { Link } from "react-router-dom"
 import { Avatar } from "./BlogCard"
+// import { getTokenPayload } from "../utils/utils"
 export const Appbar= ()=>{
+    // console.log(name)
     return <div className="border-b flex justify-between px-10 py-4 cursor-pointer">
         <Link to={"/blogs"}>
             <div className="pt-3 flex justify-center flex-col font-black text-2xl">
