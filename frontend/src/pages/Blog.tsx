@@ -11,13 +11,14 @@ export const Blog = ()=>{
     if(loading || !blog){
         return(<div>
             <Appbar/>
-            <div className="flex justify-center">
-                <div>
-                    <BlogSkeleton/>
-                    <BlogSkeleton/>
-                    <BlogSkeleton/>
-                    <BlogSkeleton/>
-                    <BlogSkeleton/>
+            <div className="flex justify-center my-8">
+                <div className="grid grid-cols-2">
+                    <div className="space-y-4 pl-10 ml-10">
+                        <BlogSkeleton />
+                    </div>
+                    <div className="pl-10 ml-10">
+                        <BlogSkeleton />
+                    </div>
                 </div>
             </div>
         </div>)

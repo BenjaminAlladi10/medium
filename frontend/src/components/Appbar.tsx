@@ -1,9 +1,8 @@
 import { Link } from "react-router-dom"
-import { Avatar } from "./BlogCard"
 export const Appbar= ()=>{
     return <div className="border-b flex justify-between px-10 py-4 cursor-pointer">
         <Link to={"/blogs"}>
-            <div className="pt-3 flex justify-center flex-col font-black text-2xl">
+            <div className="pt-3 flex justify-center flex-col font-black text-3xl font-serif">
                 BLOG'S.COM
             </div>
         </Link>
@@ -13,7 +12,7 @@ export const Appbar= ()=>{
                 <Link to={"/publish"}>
                     <button
                     type="button"
-                    className="flex items-center justify-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
+                    className="font-serif flex items-center justify-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2">
                     <svg
                         xmlns="http://www.w3.org/2000/svg"
                         width="20"
@@ -28,27 +27,22 @@ export const Appbar= ()=>{
                     </button></Link>
             </div>
 
-        <div className="flex flex-col items-center  pt-2 pr-3">
-            <Link to={"/signin"}>
-            <button type="button" className="text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center mb-2">
-            <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="none"
-                viewBox="0 0 24 24"
-                aria-label="Profile"
-                className="mr-2">
-                <circle cx="12" cy="7" r="4.5" stroke="currentColor"></circle><path stroke="currentColor" stroke-linecap="round"
-                d="M3.5 21.5v-4.342C3.5 15.414 7.306 14 12 14s8.5 1.414 8.5 3.158V21.5"></path></svg>
-            Signout
-            </button> </Link>
-        </div>
-
-        <div className="bg-gray-600 px-3 rounded-full flex justify-center flex-col">
-            <Avatar name="Nik"></Avatar>
-        </div>
-
+            <div className="flex flex-col items-center  pt-2 pr-3">
+                <Link to={"/signin"}>
+                <button type="button" className="font-serif text-white bg-[#24292F] hover:bg-[#24292F]/90 focus:ring-4 focus:outline-none focus:ring-[#24292F]/50 font-medium rounded-lg text-sm px-5 py-2.5 inline-flex items-center mb-2">
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    aria-label="Profile"
+                    className="mr-2">
+                    <circle cx="12" cy="7" r="4.5" stroke="currentColor"></circle><path stroke="currentColor" stroke-linecap="round"
+                    d="M3.5 21.5v-4.342C3.5 15.414 7.306 14 12 14s8.5 1.414 8.5 3.158V21.5"></path></svg>
+                Signout
+                </button> </Link>
+            </div>
         </div>
 
     </div>
