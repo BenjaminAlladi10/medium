@@ -169,40 +169,41 @@ export const bookRouter = new Hono<{
 
 bookRouter.use(async (c, next) => {
     const jwt = c.req.header('Authorization');
-	if (!jwt) {
-		c.status(401);
-		return c.json({ error: "unauthorized" });
-	}
-	const token = jwt.split(' ')[1];
-	const payload = await verify(token, c.env.JWT_SECRET);
-	if (!payload) {
-		c.status(401);
-		return c.json({ error: "unauthorized" });
-	}
+        if (!jwt) {
+                c.status(401);
+                return c.json({ error: "unauthorized" });
+        }
+        const token = jwt.split(' ')[1];
+        const payload = await verify(token, c.env.JWT_SECRET);
+        if (!payload) {
+                c.status(401);
+                return c.json({ error: "unauthorized" });
+        }
     //@ts-ignore
-	c.set('userId', payload.id);
-	await next()
+        c.set('userId', payload.id);
+        await next()
 });
 
 bookRouter.post('/', async (c) => {
-	const userId = c.get('userId');
-	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL	,
-	}).$extends(withAccelerate());
+        const userId = c.get('userId');
+        const prisma = new PrismaClient({
+                datasourceUrl: c.env?.DATABASE_URL      ,
+        }).$extends(withAccelerate());
 
-	const body = await c.req.json();
+        const body = await c.req.json();
     const {success} = createPostInput.safeParse(body);
     if(!success){
         c.status(413);
         return c.json({ error: "error in blog.ts post route" });
 
     }
-	try{
+        try{
         const post = await prisma.post.create({
             data: {
                 title: body.title,
                 content: body.content,
-                authorId: userId 
+                authorId: userId, 
+                createdAt : body.createdAt
             }
         });
         return c.json({
@@ -215,42 +216,40 @@ bookRouter.post('/', async (c) => {
 })
 
 bookRouter.put('/', async(c) => {
-        const body = await c.req.json();
-        const {success} = createPostInput.safeParse(body);
-        if(!success){
-            c.status(413);
-            return c.json({ error: "error in blog.ts post route" });
+    const body = await c.req.json();
+    const {success} = createPostInput.safeParse(body);
+    if(!success){
+        c.status(413);
+        return c.json({ error: "error in blog.ts post route" });
+    }
+    const prisma = new PrismaClient({
+        datasourceUrl: c.env?.DATABASE_URL,
+    }).$extends(withAccelerate());
 
-        }
+    try {
+        await prisma.post.update({
+            where: {
+                id: body.id
+            },
+            data: {
+                title: body.title,
+                content: body.content
+            }
+        });
+        return c.json({
+            id: body.id
+        });
+    } catch(e) {
+        console.log(e);
+        return c.text("error updating");
+    }
+});
+
+    //pagination could be good
+    bookRouter.get('/bulk', async(c) => {
         const prisma = new PrismaClient({
-    		datasourceUrl: c.env?.DATABASE_URL,
-    	}).$extends(withAccelerate());
-    
-        try{
-            const updt = await prisma.post.update({
-                where : {
-                    id : body.id
-                },
-                data :{
-                    title : body.title , 
-                    content : body.content
-                }
-            })
-            return c.json({
-                id : body.id
-            })
-        }
-        catch(e){
-            console.log(e);
-            return c.text("error updating");
-        }
-    })
-
-    //should be adding pagination here 
-bookRouter.get('/bulk', async(c) => {
-	const prisma = new PrismaClient({
-		datasourceUrl: c.env?.DATABASE_URL,
-	}).$extends(withAccelerate());
+                datasourceUrl: c.env?.DATABASE_URL,
+        }).$extends(withAccelerate());
 
     const blogs = await prisma.post.findMany({
         select : {
@@ -261,7 +260,8 @@ bookRouter.get('/bulk', async(c) => {
                 select : {
                     name : true
                 }
-            }
+            } , 
+            createdAt : true
         }
     });
     return c.json({"blogs" : blogs})
@@ -269,10 +269,10 @@ bookRouter.get('/bulk', async(c) => {
 
     bookRouter.get("/:id" , async(c)=>{
         const prisma = new PrismaClient({
-    		datasourceUrl: c.env?.DATABASE_URL,
-    	}).$extends(withAccelerate());
+                datasourceUrl: c.env?.DATABASE_URL,
+        }).$extends(withAccelerate());
     
-    	const id = c.req.param("id");
+        const id = c.req.param("id");
         try{
             const blog  = await prisma.post.findFirst({
                 where : {
@@ -285,7 +285,8 @@ bookRouter.get('/bulk', async(c) => {
                         select : {
                             name : true
                         }
-                    }
+                    },
+                    createdAt:true
                 }
             })
             return c.json({
@@ -297,5 +298,3 @@ bookRouter.get('/bulk', async(c) => {
             c.text("unable to fetch")
         }
     })
-
-
