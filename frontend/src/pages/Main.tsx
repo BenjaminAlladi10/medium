@@ -19,7 +19,7 @@ export const Main = () => {
                     </div>
                     <div className="text-left pt-5">
                         <div className="pl-20 ml-20">
-                            <Link to={"/blogs"}><button type="button" className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-serif rounded-3xl text-lg px-5 py-2.5 text-center inline-flex items-center">
+                            <Link to={"/signup"}><button type="button" className="text-white bg-[#050708] hover:bg-[#050708]/90 focus:ring-4 focus:outline-none focus:ring-[#050708]/50 font-serif rounded-3xl text-lg px-5 py-2.5 text-center inline-flex items-center">
                             Start reading
                             </button></Link>
                         </div>

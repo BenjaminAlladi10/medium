@@ -14,10 +14,16 @@ export const BlogCard = ({authorName,title,content,publishedDate,id} : BlogCard)
         <div className="flex justify-center flex-col"><Avatar name={authorName}/> </div>
         <div className="pl-2 font-extralight text-sm flex justify-center flex-col">{authorName} </div>
         <div className="pl-2 font-extralight text-sm flex justify-center flex-col">{":-)"}</div>
-        <div className="pl-2 font-thin text-slate-500 text-sm flex justify-center flex-col">{publishedDate}</div>
+        <div className="pl-2 font-thin text-slate-500 text-sm flex justify-center flex-col">
+            {new Date(publishedDate).toLocaleDateString(undefined, {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+            })}
+        </div>
     </div>
 
-    <div className="pt-2.5 text-xl font-semibold">
+    <div className="pt-2.5 text-xl font-serif font-semibold">
         {title}
     </div>
 
