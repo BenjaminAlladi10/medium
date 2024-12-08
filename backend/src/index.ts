@@ -34,6 +34,24 @@ app.use('/api/v1/blog/*', async (c, next) => {
   }
 })
 
+
+app.get("/",(c)=>{ //c stands for context it consists of all the req,res,next params
+  return c.text("hono");
+})
+
+app.route("/api/v1/user", userRouter);
+app.route("/api/v1/blog", bookRouter);
+
+export default app
+
+
+
+
+
+
+
+
+
 // app.use('/api/v1/blog/*', async (c, next) => {
 //   const header = c.req.header("authorization") || "";
 //   console.log(header);
@@ -59,19 +77,3 @@ app.use('/api/v1/blog/*', async (c, next) => {
 //     return c.json({ error: "unauthorized, token verification failed" });
 //   }
 // });
-
-
-app.get("/",(c)=>{ //c stands for context it consists of all the req,res,next params
-  return c.text("hono");
-})
-
-app.route("/api/v1/user", userRouter);
-app.route("/api/v1/blog", bookRouter);
-
-export default app
-
-
-
-
-
-
