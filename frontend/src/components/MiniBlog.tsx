@@ -1,10 +1,24 @@
+import { useContext } from "react"
 import { Blogtype } from "../hooks"
 import { Appbar } from "./Appbar"
 import { Avatar } from "./BlogCard"
 import Mailer from "./Mailer"
+import { BlogContext } from "../hooks/blogContext"
+import { useNavigate } from "react-router-dom"
 
 export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
-    return (
+
+    const navigate= useNavigate();
+
+    const {contextBlog, setBlog}= useContext(BlogContext);
+    console.log("contextBlog:", contextBlog);
+
+    const handleClick= ()=>{
+        setBlog(blog);
+        navigate(`/ai-powered-summary/${blog.id}`);
+    };
+
+    return ( 
         <div>
         <Appbar></Appbar>
         <div className="flex justify-center">
@@ -18,8 +32,12 @@ export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
                             year: 'numeric', month: 'long',day: 'numeric'
 })}
                     </div>
-                    <div className="pt-2 text-pretty font-serif">
-                        {blog.content}
+                    <div className="pt-2 text-pretty font-serif flex flex-col items-start">
+                        <div>{blog.content}</div>
+
+                        <button onClick={handleClick} className="font-serif self-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 md:mt-2 disabled:cursor-not-allowed active:scale-95 hover:shadow-md">
+                            Get Summary
+                        </button>
                     </div>
 
                 </div>
@@ -47,7 +65,7 @@ export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
                 </div>
             </div>
         </div>
-    </div>
+        </div>
     )
 }
 

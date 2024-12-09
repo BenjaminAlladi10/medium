@@ -7,24 +7,30 @@ import {Blogs} from './pages/Blogs'
 import { Publish } from './components/Publish'
 import { Main } from './pages/Main'
 import { Test } from './pages/Test'
+import BlogSummary from './pages/BlogSummary'
+import BlogContextProvider from "./hooks/blogContext";
+import { useState } from "react";
 
 function App() {
   
+  const [contextBlog, setBlog]= useState();
+
   return (
-      <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/main?" element= {<Main/>}></Route>
-          <Route path="/signup" element= {<Signup/>}></Route>
-          <Route path="/signin" element= {<Signin/>}></Route>
-          <Route path="/Blog/:id?" element = {<Blog/>}></Route>
-          <Route path="/Blogs" element = {<Blogs/>}></Route>
-          <Route path="/publish" element = {<Publish/>}></Route>
-          <Route path='/test' element = {<Test/>}></Route>
-        </Routes>
-      </BrowserRouter>
-      </>
-  )
+      <BlogContextProvider value={{contextBlog, setBlog}}>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/main?" element= {<Main/>}></Route>
+            <Route path="/signup" element= {<Signup/>}></Route>
+            <Route path="/signin" element= {<Signin/>}></Route>
+            <Route path="/Blog/:id?" element = {<Blog/>}></Route>
+            <Route path="/Blogs" element = {<Blogs/>}></Route>
+            <Route path="/publish" element = {<Publish/>}></Route>
+            <Route path='/test' element = {<Test/>}></Route>
+            <Route path="/ai-powered-summary/:id" element={<BlogSummary/>}></Route>
+          </Routes>
+        </BrowserRouter>
+      </BlogContextProvider>
+  );
 }
 
 export default App
