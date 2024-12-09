@@ -3,6 +3,7 @@ import { withAccelerate } from "@prisma/extension-accelerate";
 import { Hono } from "hono";
 import { verify } from "hono/jwt";
 import { createPostInput ,updatePostInput } from "@nikhil-duduka/commonzod";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
 export const bookRouter = new Hono<{
     Bindings: {
@@ -147,6 +148,32 @@ bookRouter.put('/', async(c) => {
     })
 
 
+    bookRouter.post('/summary', async (c) => {
+        try {
+            const prisma = new PrismaClient({
+                datasourceUrl: c.env?.DATABASE_URL,
+            }).$extends(withAccelerate());
+    
+            const body = await c.req.json();
+            
+            // Ensure API key is correctly referenced from environment
+            const genAI = new GoogleGenerativeAI("AIzaSyA3HCsjvfhCiwJN0u-PPbEasONwoYGBETc");
+            const model = genAI.getGenerativeModel({ model: "gemini-pro"});
+    
+            const prompt = `Generate a breif and short summary of the following blog content. 
+            The summary should capture the main ideas, key points, and core message:
+            ${body.content}`;
+    
+            const result = await model.generateContent(prompt);
+            const summary = result.response.text();
+            
+            return c.json({ summary });
+        } catch (error) {
+            console.error("Error in generating summary:", error);
+            c.status(500);
+            return c.json({ error: "Error in generating summary" });
+        }
+    });
 // import { Hono } from 'hono'
 // import { PrismaClient } from '@prisma/client/edge'
 // import { withAccelerate } from '@prisma/extension-accelerate'
