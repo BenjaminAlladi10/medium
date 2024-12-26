@@ -22,8 +22,8 @@ export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
         <div>
         <Appbar></Appbar>
         <div className="flex justify-center">
-            <div className="flex flex-col md:flex-row md:justify-between pt-200 pt-12 w-[90%] mx-auto">
-                <div className="w-full md:w-[60%]">
+            <div className="grid grid-cols-12 px-10 w-full pt-200 max-w-screen-xl pt-12">
+                <div className="col-span-8">
                     <div className="text-5xl font-serif font-extrabold">
                         {blog.title}
                     </div>
@@ -35,25 +35,25 @@ export const MiniBlog = ({blog} : {blog : Blogtype}) =>{
                     <div className="pt-2 text-pretty font-serif flex flex-col items-start">
                         <div>{blog.content}</div>
 
-                        <button onClick={handleClick} className="font-serif self-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none font-medium rounded-lg text-sm md:px-6 py-2.5 me-2 mb-2 md:mt-2 disabled:cursor-not-allowed active:scale-95 hover:shadow-md">
+                        <button onClick={handleClick} className="font-serif self-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:outline-none font-medium rounded-lg text-sm px-6 py-2.5 me-2 mb-2 md:mt-2 disabled:cursor-not-allowed active:scale-95 hover:shadow-md">
                             Get Summary
                         </button>
                     </div>
 
                 </div>
-                <div className="w-full md:w-[40%] md:pl-10">
-                    <div className="font-extrabold text-blue-600/100 dark:text-blue-500/100 md:pl-6">
+                <div className="col-span-4 pl-8">
+                    <div className="font-extrabold text-blue-600/100 dark:text-blue-500/100">
                         Author
                     </div>
-                    <div className="pt-1 flex md:pl-6">
-                       <div className="md:pr-2 flex flex-col justify-center">
+                    <div className="pt-1 flex">
+                       <div className="pr-2 flex flex-col justify-center">
                         <Avatar name={blog.author.name}></Avatar>
                        </div>
                         <div className="text-xl font-bold">
                             {(blog.author.name) || "Anonymous"}
                         </div>
                     </div>
-                    <div className="pt-1 text-slate-500 md:pl-7">
+                    <div className="pt-1 text-slate-500 pl-7">
                             {"Where Words Create Worlds – Dive into Stories "}
                             <div>
                             <span className="font-bold text-sm text-blue-600/100 dark:text-blue-500/100"> {`id :-)  ${blog.id}`}</span>
