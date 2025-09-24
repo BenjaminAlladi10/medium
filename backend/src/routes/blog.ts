@@ -157,7 +157,7 @@ bookRouter.put('/', async(c) => {
             const body = await c.req.json();
             
             // Ensure API key is correctly referenced from environment
-            const genAI = new GoogleGenerativeAI("AIzaSyA3HCsjvfhCiwJN0u-PPbEasONwoYGBETc");
+            const genAI = new GoogleGenerativeAI("Removed api key");
             const model = genAI.getGenerativeModel({ model: "gemini-pro"});
     
             const prompt = `Generate a breif and short summary of the following blog content. 
